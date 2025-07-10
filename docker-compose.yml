@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  mysql-user:
+    image: mysql:8.0
+    container_name: mysql-user
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: userdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_user_data:/var/lib/mysql
+    networks:
+      - lifequest-network
+
+  user-service:
+    build:
+      context: ./user-service
+    container_name: user-service
+    depends_on:
+      - mysql-user
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-user:3306/userdb
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - "8081:8081"
+    networks:
+      - lifequest-network
+
+volumes:
+  mysql_user_data:
+
+networks:
+  lifequest-network:
+    driver: bridge
