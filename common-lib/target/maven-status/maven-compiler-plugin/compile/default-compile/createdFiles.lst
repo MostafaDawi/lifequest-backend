@@ -1,0 +1,5 @@
+com\lifequest\common\dto\UserDTO.class
+com\lifequest\common\enums\Role.class
+com\lifequest\common\errorHandling\ResourceNotFoundException.class
+com\lifequest\common\response\ApiResponse.class
+com\lifequest\common\Main.class
